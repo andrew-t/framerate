@@ -6,7 +6,9 @@
 // }, 100);
 function everyFrame(callback, maxInterval, logFramerate) {
 	var lastTime = 0,
+		cancelled = false,
 		update = function everyFrameUpdate(time) {
+			if (cancelled) return;
 			var interval = time - lastTime;
 			if (logFramerate)
 				console.log((1000 / interval) + ' FPS');
@@ -15,6 +17,9 @@ function everyFrame(callback, maxInterval, logFramerate) {
 			callback(Math.min(interval, maxInterval));
 		};
 	requestAnimationFrame(update);
+	return function cancel() {
+		cancelled = true;
+	};
 }
 
 if (typeof module !== 'undefined')
