@@ -8,6 +8,7 @@ function eventise(targetClass) {
 				this._eventListeners[event] = [];
 			this._eventListeners[event]
 				.push(callback);
+			return this;
 		};
 
 	targetClass.prototype.removeEventListener =
@@ -15,20 +16,22 @@ function eventise(targetClass) {
 		function off(event, callback) {
 			if (!this._eventListeners ||
 				!this._eventListeners[event])
-				return;
+				return this;
 			this._eventListeners[event].splice(
 				this._eventListeners[event]
 					.indexOf(callback),
 				1);
+			return this;
 		};
 
 	targetClass.prototype._triggerEvent =
 		function _triggerEvent(event, ...args) {
 			if (!this._eventListeners ||
 				!this._eventListeners[event])
-				return;
+				return this;
 			this._eventListeners[event].forEach(
 				callback => callback(...args));
+			return this;
 		};
 }
 
